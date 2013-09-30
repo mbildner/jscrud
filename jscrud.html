@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<script>
+
+		// Create, Read, Update, Delete methods will have to be supported
+		// as items are created they will first have to be indexed
+
+		var holder = {};
+
+		var indices = {};
+
+		var indexObject = function(item){
+			var uid=Object.keys(holder).length;
+			holder[uid] = item;
+
+			for (key in item){
+				if (!(key in indices)){
+					// this is the first time the program has encountered this key, create an index in indices for it
+					indices[key] = {};
+				};
+				// the index for each key now definitely exists
+				var indx = indices[key];
+				var value=item[key];
+
+				if (value in indx){
+					// the name is already in the index, add item's uid to index array
+					alert("we've seen this before");
+					indx[value].push(uid);
+				} else {
+					// this is the first time the name has been encountered, create a new array with this name by itself
+					alert("we've never seen this value before");
+					indx[value] = [uid];
+				}	
+			}
+		};
+
+		var createRecord = function(item){
+			indexObject(item);
+			
+		};
+
+		var deleteRecord = function(item){
+
+		}
+
+
+
+
+		var moshe = {first:'moshe', last:'bildner'};
+		var luke = {first:'moshe', last:'trapp'};
+		indexObject(moshe);
+		indexObject(luke);
+
+		</script>
+	
+
+	</head>
+
+
+</html>
