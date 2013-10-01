@@ -15,15 +15,21 @@
 
 		var indices = {};
 
+
 		var indexObject = function(item){
+			console.log("indexing: " + JSON.stringify(item) + " indices are now: " + JSON.stringify(indices));
+
 			for (key in item){
 				if (!(key in indices)){
 					// this is the first time the program has encountered this key, create an index in indices for it
 					indices[key] = {};
 				};
+
 				// the index for each key now definitely exists
 				var indx = indices[key];
 				var value=item[key];
+				console.log("index we're checking: " + JSON.stringify(indx));
+				console.log("value we're looking for: " + value);
 
 				if (value in indx){
 					// the name is already in the index, add item's uid to index array
@@ -87,6 +93,30 @@
 
 
 
+		var stripIndices = function(item){
+			// clear an item's old indices
+
+			// first find all indices where a certain uid appears and expunge it from the index
+
+			var impactedIndices = [];
+
+
+			for (key in item){
+				var indx=indices[key];
+				var entry=indices[key][item[key]];
+				// find the uid of the item to be cleared from index
+				var removeIndex = entry.indexOf(matchObject(item));
+				entry.splice(removeIndex, 1);
+			}
+		}
+
+		var updateIndices = function(item){
+			// strip out the old index entries
+			stripIndices(item);
+			// put in new ones!
+			indexObject(item);
+		}
+
 
 		var createRecord = function(item){
 			// index the object
@@ -99,12 +129,11 @@
 		};
 
 
-
-
 		var deleteRecord = function(item){
 			// delete record
-			
+
 		}
+
 
 		var updateRecord = function(item, updates){
 			// update record
@@ -115,13 +144,10 @@
 				for (key in updates){
 					record[key] = updates[key];
 				}
+				updateIndices(record);
 			})
-			// updates made successfully 
+			// updates made successfully
 			return original;
-
-			// todo: update the indices!
-			// if the item's old key was in the index, clear it 
-			// add the item's new key to the appropriate indices
 		}
 
 		var readRecord = function(item){
@@ -133,7 +159,6 @@
 				var record = holder[uid];
 				retrievedRecords.push(record);
 			});
-
 
 			return retrievedRecords;
 		}
@@ -152,6 +177,7 @@
 
 		var moshes = readRecord({first:'moshe'});
 
+		updateIndices(moshe);
 
 		</script>
 	
