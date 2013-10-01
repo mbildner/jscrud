@@ -2,9 +2,10 @@
 
 <html>
 	<head>
+		<meta charset="utf-8"></meta>
 		<script>
 
-		// a function 
+		// a function that tests multiple arrays for 
 
 		// Create, Read, Update, Delete methods will have to be supported
 		// as items are created they will first have to be indexed
@@ -15,9 +16,6 @@
 		var indices = {};
 
 		var indexObject = function(item){
-			var uid=Object.keys(holder).length;
-			holder[uid] = item;
-
 			for (key in item){
 				if (!(key in indices)){
 					// this is the first time the program has encountered this key, create an index in indices for it
@@ -37,6 +35,35 @@
 			}
 		};
 
+
+		var filterArrays = function(arrayList){
+			// the shortest uid array passed in should be the source for all tested uids
+			// by definition, any item in the intersection of all arrays must be in the shortest array
+			// create an array to hold matched uids
+			var matches = [];
+			if (arrayList.length === 1){
+				// if only one uid array was passed in, return it, we're done
+				return arrayList[0];
+			}
+			// find the shortest array:
+			var testArray = arrayList.sort(function(a,b){
+				return a.length - b.length;
+			})[0];
+			testArray.forEach(function(uid){
+				var matchFlag = true;
+				arrayList.forEach(function(testAgainst){
+					if (testAgainst.indexOf(uid)===-1){
+						matchFlag = false;
+					}
+				})
+				if (matchFlag === true){
+					matches.push(uid);
+				}
+			})
+			return matches;
+		}
+
+
 		var matchObject = function(item){
 			var indxHits = [];
 			for (key in item){
@@ -54,14 +81,19 @@
 			}
 			// test returned index hits; a uid must be present in all of them to be considered a match
 			// return the matched records
-			// for now, return just the indxHits array, it will be tested for set membership later
-			return indxHits;
+
+			console.log(indxHits);
 		}
 
 
 
 		var createRecord = function(item){
+			// index the object
 			indexObject(item);
+
+			// store the object
+			var uid=Object.keys(holder).length;
+			holder[uid] = item;
 
 		};
 
@@ -69,25 +101,30 @@
 			// find the object's uid by 
 		}
 
+		var updateRecord = function(item){
+			// update record
+		}
 
-
+		var readRecord = function(item){
+			// find and return a record
+		}
 
 		var moshe = {first:'moshe', last:'bildner'};
 		var luke = {first:'moshe', last:'trapp'};
 		
 		// testing code
 
-		createRecord(moshe);
-		createRecord(luke);
+		// createRecord(moshe);
+		// createRecord(luke);
 
-		alert(matchObject(luke));
+		// alert(matchObject(luke));
 
 
-		alert(matchObject({
-			first:'moshe',
-			middle:'hillel',
-			last:'bildner'
-		}));
+		// alert(matchObject({
+		// 	first:'moshe',
+		// 	middle:'hillel',
+		// 	last:'bildner'
+		// }));
 
 
 		</script>
