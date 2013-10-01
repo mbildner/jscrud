@@ -31,12 +31,13 @@
 				console.log("index we're checking: " + JSON.stringify(indx));
 				console.log("value we're looking for: " + value);
 
+				var uid = Object.keys(holder).length;
+
 				if (value in indx){
 					// the name is already in the index, add item's uid to index array
 					indx[value].push(uid);
 				} else {
 					// this is the first time the name has been encountered, create a new array with this name by itself
-					var uid = Object.keys(holder).length;
 					indx[value] = [uid];
 				}	
 			}
@@ -164,6 +165,7 @@
 		}
 
 		var moshe = {first:'moshe', last:'bildner'};
+		var m = {first:'moshe', last:'jennifer'};
 		var gery = {first:'gery', last:'brownholtz'};
 		var eva = {first:'eva', last:'bildner'};
 		
@@ -173,11 +175,9 @@
 		createRecord(moshe);
 		createRecord(gery);
 		createRecord(eva);
+		createRecord(m);
 
 
-		var moshes = readRecord({first:'moshe'});
-
-		updateIndices(moshe);
 
 		</script>
 	
