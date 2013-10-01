@@ -4,6 +4,8 @@
 	<head>
 		<script>
 
+		// a function 
+
 		// Create, Read, Update, Delete methods will have to be supported
 		// as items are created they will first have to be indexed
 
@@ -27,18 +29,33 @@
 
 				if (value in indx){
 					// the name is already in the index, add item's uid to index array
-					alert("we've seen this before");
 					indx[value].push(uid);
 				} else {
 					// this is the first time the name has been encountered, create a new array with this name by itself
-					alert("we've never seen this value before");
 					indx[value] = [uid];
 				}	
 			}
 		};
 
 		var matchObject = function(item){
-			var keys = Object.keys()
+			var indxHits = [];
+			for (key in item){
+				var value = item[key];
+				alert(value);
+				if (key in indices){
+					// if there is an index defined for the matching object, push the uid's in the index array and into the indxHits array
+					var indx = indices[key];
+					var hit = indx[value];
+					indxHits.push(hit);
+				} else {
+					// there is no index defined for some key in the matching object, therefore there is no match, return out of the loop
+					return undefined;
+				}
+			}
+			// test returned index hits; a uid must be present in all of them to be considered a match
+			// return the matched records
+			// for now, return just the indxHits array, it will be tested for set membership later
+			return indxHits;
 		}
 
 
@@ -57,8 +74,21 @@
 
 		var moshe = {first:'moshe', last:'bildner'};
 		var luke = {first:'moshe', last:'trapp'};
-		indexObject(moshe);
-		indexObject(luke);
+		
+		// testing code
+
+		createRecord(moshe);
+		createRecord(luke);
+
+		alert(matchObject(luke));
+
+
+		alert(matchObject({
+			first:'moshe',
+			middle:'hillel',
+			last:'bildner'
+		}));
+
 
 		</script>
 	
