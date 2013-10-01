@@ -30,6 +30,7 @@
 					indx[value].push(uid);
 				} else {
 					// this is the first time the name has been encountered, create a new array with this name by itself
+					var uid = Object.keys(holder).length;
 					indx[value] = [uid];
 				}	
 			}
@@ -68,7 +69,6 @@
 			var indxHits = [];
 			for (key in item){
 				var value = item[key];
-				alert(value);
 				if (key in indices){
 					// if there is an index defined for the matching object, push the uid's in the index array and into the indxHits array
 					var indx = indices[key];
@@ -76,14 +76,15 @@
 					indxHits.push(hit);
 				} else {
 					// there is no index defined for some key in the matching object, therefore there is no match, return out of the loop
-					return undefined;
+					return [];
 				}
 			}
 			// test returned index hits; a uid must be present in all of them to be considered a match
+			var matches = filterArrays(indxHits);
 			// return the matched records
-
-			console.log(indxHits);
+			return matches;
 		}
+
 
 
 
@@ -97,34 +98,59 @@
 
 		};
 
+
+
+
 		var deleteRecord = function(item){
-			// find the object's uid by 
+			// delete record
+			
 		}
 
-		var updateRecord = function(item){
+		var updateRecord = function(item, updates){
 			// update record
+
+			// find and retrieve an array of items that match the pattern of 'item'
+			var original = readRecord(item)
+			original.forEach(function(record){
+				for (key in updates){
+					record[key] = updates[key];
+				}
+			})
+			// updates made successfully 
+			return original;
+
+			// todo: update the indices!
+			// if the item's old key was in the index, clear it 
+			// add the item's new key to the appropriate indices
 		}
 
 		var readRecord = function(item){
 			// find and return a record
+			var retrievedRecords = [];
+
+			var uids = matchObject(item);
+			var records = uids.map(function(uid){
+				var record = holder[uid];
+				retrievedRecords.push(record);
+			});
+
+
+			return retrievedRecords;
 		}
 
 		var moshe = {first:'moshe', last:'bildner'};
-		var luke = {first:'moshe', last:'trapp'};
+		var gery = {first:'gery', last:'brownholtz'};
+		var eva = {first:'eva', last:'bildner'};
 		
+
 		// testing code
 
-		// createRecord(moshe);
-		// createRecord(luke);
+		createRecord(moshe);
+		createRecord(gery);
+		createRecord(eva);
 
-		// alert(matchObject(luke));
 
-
-		// alert(matchObject({
-		// 	first:'moshe',
-		// 	middle:'hillel',
-		// 	last:'bildner'
-		// }));
+		var moshes = readRecord({first:'moshe'});
 
 
 		</script>
