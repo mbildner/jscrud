@@ -25,7 +25,7 @@
 				var indx = indices[key];
 				var value=item[key];
 
-				var uid = Object.keys(holder).length;
+				var uid = item['__uid'];
 
 				if (value in indx){
 					// the name is already in the index, add item's uid to index array
@@ -113,14 +113,19 @@
 			indexObject(newItem);
 		}
 
+		// not an actual uid but unique enough for our needs.
+		var makeUid = function() {
+			return parseInt((new Date()).getTime() + String(Math.floor(Math.random() * 100)));
+		}
+
 		var createRecord = function(item){
+			var uid = makeUid();
+			item['__uid'] = uid;
 			// index the object
 			indexObject(item);
 
 			// store the object
-			var uid=Object.keys(holder).length;
 			holder[uid] = item;
-
 		};
 
 		var deleteRecord = function(item){
