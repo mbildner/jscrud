@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8"></meta>
-		<script>
 		// a function that tests multiple arrays for
 
 		// Create, Read, Update, Delete methods will have to be supported
@@ -183,6 +178,3 @@
 		records.forEach(function(record){
 			createRecord(record);
 		});
-		</script>
-	</head>
-</html>
