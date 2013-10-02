@@ -155,17 +155,14 @@
 			return original;
 		}
 
+		// find and return a record
 		var readRecord = function(item){
-			// find and return a record
-			var retrievedRecords = [];
-
 			var uids = matchObject(item);
-			var records = uids.map(function(uid){
-				var record = holder[uid];
+
+			return uids.map(function(uid){
+				return holder[uid].valueOf();
 				retrievedRecords.push(record);
 			});
-
-			return retrievedRecords;
 		}
 
 		records = [
