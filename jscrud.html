@@ -5,6 +5,7 @@
 		<meta charset="utf-8"></meta>
 		<script>
 
+
 		// a function that tests multiple arrays for 
 
 		// Create, Read, Update, Delete methods will have to be supported
@@ -17,7 +18,6 @@
 
 
 		var indexObject = function(item){
-			console.log("indexing: " + JSON.stringify(item) + " indices are now: " + JSON.stringify(indices));
 
 			for (key in item){
 				if (!(key in indices)){
@@ -28,8 +28,6 @@
 				// the index for each key now definitely exists
 				var indx = indices[key];
 				var value=item[key];
-				console.log("index we're checking: " + JSON.stringify(indx));
-				console.log("value we're looking for: " + value);
 
 				var uid = Object.keys(holder).length;
 
@@ -98,26 +96,26 @@
 			// clear an item's old indices
 
 			// first find all indices where a certain uid appears and expunge it from the index
-
 			var impactedIndices = [];
 
 
 			for (key in item){
 				var indx=indices[key];
-				var entry=indices[key][item[key]];
+				var entry = indx[item[key]];
+
+
 				// find the uid of the item to be cleared from index
 				var removeIndex = entry.indexOf(matchObject(item));
 				entry.splice(removeIndex, 1);
 			}
 		}
 
-		var updateIndices = function(item){
+		var updateIndices = function(oldItem, newItem){
 			// strip out the old index entries
-			stripIndices(item);
+			stripIndices(oldItem);
 			// put in new ones!
-			indexObject(item);
+			indexObject(newItem);
 		}
-
 
 		var createRecord = function(item){
 			// index the object
@@ -129,10 +127,19 @@
 
 		};
 
-
 		var deleteRecord = function(item){
-			// delete record
+			var uids = matchObject(item);
 
+			// stripIndices(item);
+
+			for (var i=0; i<uids.length; i++){
+				var uid = uids[i];
+				console.log(uid);
+
+				if (uid in uids){
+					delete uids[uid];
+				}				
+			}
 		}
 
 
@@ -145,7 +152,7 @@
 				for (key in updates){
 					record[key] = updates[key];
 				}
-				updateIndices(record);
+				updateIndices(item, record);
 			})
 			// updates made successfully
 			return original;
@@ -165,18 +172,19 @@
 		}
 
 		var moshe = {first:'moshe', last:'bildner'};
-		var m = {first:'moshe', last:'jennifer'};
+		var nechama = {first:'nechama', last:'bildner'};
 		var gery = {first:'gery', last:'brownholtz'};
-		var eva = {first:'eva', last:'bildner'};
-		
+		var liss = {first:'moshe', last:'liss'};
+		var fox = {first:'moshe', last:'fox'};
+
 
 		// testing code
 
 		createRecord(moshe);
+		createRecord(nechama);
 		createRecord(gery);
-		createRecord(eva);
-		createRecord(m);
-
+		createRecord(liss);
+		createRecord(fox);
 
 
 		</script>
