@@ -171,26 +171,17 @@
 			return retrievedRecords;
 		}
 
-		var moshe = {first:'moshe', last:'bildner'};
-		var nechama = {first:'nechama', last:'bildner'};
-		var gery = {first:'gery', last:'brownholtz'};
-		var liss = {first:'moshe', last:'liss'};
-		var fox = {first:'moshe', last:'fox'};
+    records = [
+      {first:'moshe', last:'bildner'},
+      {first:'nechama', last:'bildner'},
+      {first:'gery', last:'brownholtz'},
+      {first:'moshe', last:'liss'},
+      {first:'moshe', last:'fox'}
+    ]
 
-
-		// testing code
-
-		createRecord(moshe);
-		createRecord(nechama);
-		createRecord(gery);
-		createRecord(liss);
-		createRecord(fox);
-
-
+    records.forEach(function(record){
+      createRecord(record);
+    });
 		</script>
-	
-
 	</head>
-
-
 </html>
