@@ -88,22 +88,28 @@
 
 
 
-		var stripIndices = function(item){
+		var stripIndices = function(uuids){
+			var uids = uuids.slice(0, uuids.length)
 			// clear an item's old indices
 
 			// first find all indices where a certain uid appears and expunge it from the index
 			var impactedIndices = [];
 
+			uids.forEach(function(uid){
+				var item = holder[uid];
 
-			for (key in item){
-				var indx=indices[key];
-				var entry = indx[item[key]];
+				if (item == null) {
+					return;
+				}
+				for (key in item){
+					var currentIndex = indices[key];
+					var entry = currentIndex[item[key]];
 
-
-				// find the uid of the item to be cleared from index
-				var removeIndex = entry.indexOf(matchObject(item));
-				entry.splice(removeIndex, 1);
-			}
+					// find the uid of the item to be cleared from index
+					var removeIndex = entry.indexOf(matchObject(item));
+					entry.splice(removeIndex, 1);
+				}
+			});
 		}
 
 		var updateIndices = function(oldItem, newItem){
@@ -130,13 +136,14 @@
 
 		var deleteRecord = function(item){
 			var uids = matchObject(item);
+			var uids2 = uids.slice(0, uids.length)
 
-			uids.forEach(function(uid){
+			stripIndices(uids);
+
+			// clear an item's old indices
+			uids2.forEach(function(uid){
 				delete holder[uid];
 			});
-			
-			stripIndices(item);
-
 		}
 
 
@@ -145,6 +152,7 @@
 
 			// find and retrieve an array of items that match the pattern of 'item'
 			var original = readRecord(item)
+
 			original.forEach(function(record){
 				for (key in updates){
 					record[key] = updates[key];
