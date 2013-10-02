@@ -130,17 +130,11 @@
 
 		var deleteRecord = function(item){
 			var uids = matchObject(item);
+			stripIndices(item);
 
-			// stripIndices(item);
-
-			for (var i=0; i<uids.length; i++){
-				var uid = uids[i];
-				console.log(uid);
-
-				if (uid in uids){
-					delete uids[uid];
-				}				
-			}
+			uids.forEach(function(uid){
+				delete holder[uid];
+			});
 		}
 
 
