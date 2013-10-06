@@ -1,8 +1,5 @@
 		
 function Jscrud(){
-
-	// a function that tests multiple arrays for
-
 	// Create, Read, Update, Delete methods will have to be supported
 	// as items are created they will first have to be indexed
 
@@ -87,12 +84,10 @@ function Jscrud(){
 
 
 	var stripIndices = function(uuids){
-		var uids = uuids.slice(0, uuids.length)
 		// clear an item's old indices
 
-		// first find all indices where a certain uid appears and expunge it from the index
-		var impactedIndices = [];
-
+		// return a new uids object we can edit without problematic side effects (they were being deleted somewhere else and throwing errors) 
+		var uids = uuids.slice(0, uuids.length)
 		uids.forEach(function(uid){
 			var item = holder[uid];
 
@@ -104,7 +99,7 @@ function Jscrud(){
 				var entry = currentIndex[item[key]];
 
 				// find the uid of the item to be cleared from index
-				var removeIndex = entry.indexOf(matchObject(item));
+				var removeIndex = entry.indexOf(uid);
 				entry.splice(removeIndex, 1);
 			}
 		});
@@ -150,9 +145,12 @@ function Jscrud(){
 
 		// find and retrieve an array of items that match the pattern of 'item'
 		var original = this.readRecord(item)
+		console.log('to update: ' + original);
 
-		original.forEach(function(record){		
-			stripIndices(matchObject(record));
+		original.forEach(function(record){	
+			console.log('record: ', record);	
+			var toClear = [holder.__uid];
+			stripIndices(toClear);
 			for (key in updates){
 				record[key] = updates[key];
 			}
