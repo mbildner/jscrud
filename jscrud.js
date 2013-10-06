@@ -2,12 +2,8 @@
 function Jscrud(){
 	// Create, Read, Update, Delete methods will have to be supported
 	// as items are created they will first have to be indexed
-
-	// added comments so I can do a second commit
 	var holder = {};
-
 	var indices = {};
-
 	var indexObject = function(item){
 
 		for (key in item){
@@ -31,6 +27,16 @@ function Jscrud(){
 			}	
 		}
 	};
+
+	var publicForm = function(record){
+		// remove the program-added uid for the user's copy of the record
+
+		// safely clone our object so deleting attributes doesn't remove them for real
+		var publicFormRecord = JSON.parse(JSON.stringify(record));
+
+		delete publicFormRecord.__uid;
+		return publicFormRecord;
+	}
 
 
 	var filterArrays = function(arrayList){
@@ -157,7 +163,7 @@ function Jscrud(){
 			indexObject(record);
 		})
 		// updates made successfully
-		return original;
+		return publicForm(original);
 	}
 
 
@@ -166,15 +172,17 @@ function Jscrud(){
 		var uids = matchObject(item);
 
 		return uids.map(function(uid){
-			return holder[uid].valueOf();
+			return publicForm(holder[uid].valueOf());
 		});
 	}
+
+
+
 
 	this.readRecord = readRecord;
 	this.createRecord = createRecord;
 	this.deleteRecord = deleteRecord;
 	this.updateRecord = updateRecord;
-
 }
 
 
