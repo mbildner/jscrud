@@ -1,11 +1,43 @@
 		
-function Jscrud(){
+function Jscrud(selectedStorageEngine, protectedNameSpace){
 	// Create, Read, Update, Delete methods will have to be supported
 	// as items are created they will first have to be indexed
+
 	var holder = {};
 	var indices = {};
-	var indexObject = function(item){
 
+	var nameSpace = protectedNameSpace || "jscrud" + Math.floor(Math.random()*1000000);
+
+	var engines = {
+		'localStorage': window.localStorage,
+		'sessionStorage': window.sessionStorage
+	};
+
+
+	var storageEngine =  ( engines[selectedStorageEngine] || window.sessionStorage );
+
+
+	var nameSpacer = function(name, nameSpace){
+		return nameSpace + ":" + name
+	}
+
+	var storeObject = function(item){
+		// store item as a JSON string inside the localStorage engine
+
+		var key = nameSpacer(item.__uid, nameSpace);
+		var value = JSON.stringify(item);
+
+		storageEngine.setItem(key, value);
+		return undefined
+	}
+
+	var retrieveObject = function(uid){
+		var key = nameSpacer(uid, nameSpace);
+		var value = JSON.parse(storageEngine.getItem(key));
+		return value
+	}
+
+	var indexObject = function(item){
 		for (key in item){
 			if (!(key in indices)){
 				// this is the first time the program has encountered this key, create an index in indices for it
@@ -95,7 +127,7 @@ function Jscrud(){
 		// return a new uids object we can edit without problematic side effects (they were being deleted somewhere else and throwing errors) 
 		var uids = uuids.slice(0, uuids.length)
 		uids.forEach(function(uid){
-			var item = holder[uid];
+			var item = retrieveObject(uid);
 
 			if (item == null) {
 				return;
@@ -130,8 +162,28 @@ function Jscrud(){
 		indexObject(item);
 
 		// store the object
-		holder[uid] = item;
+		storeObject(item);
+
 	};
+
+
+	var readRecordInternal = function(item){
+	// find and return a set of records with their uids, an internal method
+		var uids = matchObject(item);
+
+		return uids.map(function(uid){
+			return retrieveObject(uid);
+		});
+	}
+
+	var readRecord = function(item){
+	// find and return a record
+		var uids = matchObject(item);
+
+		return uids.map(function(uid){
+			return publicForm(retrieveObject(uid));
+		});
+	}
 
 	var deleteRecord = function(item){
 		var uids = matchObject(item);
@@ -141,7 +193,7 @@ function Jscrud(){
 
 		// clear an item's old indices
 		uids2.forEach(function(uid){
-			delete holder[uid];
+			storageEngine.removeItem(nameSpacer(uid, nameSpace));
 		});
 	}
 
@@ -150,33 +202,27 @@ function Jscrud(){
 		// update record
 
 		// find and retrieve an array of items that match the pattern of 'item'
-		var original = this.readRecord(item)
-		console.log('to update: ' + original);
+		
+		var original = readRecordInternal(item);
+		
+		original.forEach(function(record){
 
-		original.forEach(function(record){	
-			console.log('record: ', record);	
-			var toClear = [holder.__uid];
+			var toClear = [record.__uid];
+
 			stripIndices(toClear);
 			for (key in updates){
 				record[key] = updates[key];
 			}
 			indexObject(record);
+			var key = nameSpacer(toClear[0], nameSpace);
+			// overwrite the old record with the new one
+			storeObject(record);
+		
 		})
-		// updates made successfully
-		return publicForm(original);
+		
+
+		return undefined
 	}
-
-
-	// find and return a record
-	var readRecord = function(item){
-		var uids = matchObject(item);
-
-		return uids.map(function(uid){
-			return publicForm(holder[uid].valueOf());
-		});
-	}
-
-
 
 
 	this.readRecord = readRecord;
@@ -187,5 +233,3 @@ function Jscrud(){
 
 
 exports.Jscrud = Jscrud;
-
-
