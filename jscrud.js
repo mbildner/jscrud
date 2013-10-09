@@ -7,7 +7,7 @@
 
 	  var nameSpace = protectedNameSpace || "jscrud" + Math.floor(Math.random()*1000000);
 
-	  var storageEngine = ( selectedStorageEngine || window.sessionStorage );
+	  var storageEngine = selectedStorageEngine || window.sessionStorage;
 
 	  var storeObject = function(item){
 		  // store item as a JSON string inside the localStorage engine
