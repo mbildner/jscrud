@@ -16,7 +16,6 @@
 		  var value = JSON.stringify(item);
 
 		  storageEngine.setItem(key, value);
-		  return undefined
 	  }
 
 	  var retrieveObject = function(uid){
@@ -156,9 +155,6 @@
 			  storeObject(record);
 
 		  })
-
-
-		  return undefined
 	  }
   }
 
