@@ -119,12 +119,7 @@
 	  }
 
 	  this.readRecord = function(item){
-	    // find and return a record
-		  var uids = matchObject(item);
-
-		  return uids.map(function(uid){
-			  return publicForm(retrieveObject(uid));
-		  });
+      return readRecordInternal(item).map(publicForm);
 	  }
 
 	  this.deleteRecord = function(item){
