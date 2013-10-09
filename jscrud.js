@@ -9,11 +9,6 @@
 
 	  var storageEngine = ( selectedStorageEngine || window.sessionStorage );
 
-
-	  var nameSpacer = function(name, nameSpace){
-		  return nameSpace + ":" + name
-	  }
-
 	  var storeObject = function(item){
 		  // store item as a JSON string inside the localStorage engine
 
@@ -53,45 +48,6 @@
 		  }
 	  };
 
-	  var publicForm = function(record){
-		  // remove the program-added uid for the user's copy of the record
-
-		  // safely clone our object so deleting attributes doesn't remove them for real
-		  var publicFormRecord = JSON.parse(JSON.stringify(record));
-
-		  delete publicFormRecord.__uid;
-		  return publicFormRecord;
-	  }
-
-
-	  var filterArrays = function(arrayList){
-		  // the shortest uid array passed in should be the source for all tested uids
-		  // by definition, any item in the intersection of all arrays must be in the shortest array
-		  // create an array to hold matched uids
-		  var matches = [];
-		  if (arrayList.length === 1){
-			  // if only one uid array was passed in, return it, we're done
-			  return arrayList[0];
-		  }
-		  // find the shortest array:
-		  var testArray = arrayList.sort(function(a,b){
-			  return a.length - b.length;
-		  })[0];
-		  testArray.forEach(function(uid){
-			  var matchFlag = true;
-			  arrayList.forEach(function(testAgainst){
-				  if (testAgainst.indexOf(uid)===-1){
-					  matchFlag = false;
-				  }
-			  })
-			  if (matchFlag === true){
-				  matches.push(uid);
-			  }
-		  })
-		  return matches;
-	  }
-
-
 	  var matchObject = function(item){
 		  var indxHits = [];
 		  for (key in item){
@@ -111,8 +67,6 @@
 		  // return the matched records
 		  return matches;
 	  }
-
-
 
 	  var stripIndices = function(uuids){
 		  // clear an item's old indices
@@ -141,11 +95,6 @@
 		  stripIndices(matchObject(oldItem));
 		  // put in new ones!
 		  indexObject(newItem);
-	  }
-
-	  // not an actual uid but unique enough for our needs.
-	  var makeUid = function() {
-		  return parseInt((new Date()).getTime() + String(Math.floor(Math.random() * 100)));
 	  }
 
 	  var createRecord = function(item){
@@ -223,6 +172,52 @@
 	  this.deleteRecord = deleteRecord;
 	  this.updateRecord = updateRecord;
   }
+
+	var nameSpacer = function(name, nameSpace){
+		return nameSpace + ":" + name
+	}
+
+	var publicForm = function(record){
+		// remove the program-added uid for the user's copy of the record
+
+		// safely clone our object so deleting attributes doesn't remove them for real
+		var publicFormRecord = JSON.parse(JSON.stringify(record));
+
+		delete publicFormRecord.__uid;
+		return publicFormRecord;
+	}
+
+  var filterArrays = function(arrayList){
+		// the shortest uid array passed in should be the source for all tested uids
+		// by definition, any item in the intersection of all arrays must be in the shortest array
+		// create an array to hold matched uids
+		var matches = [];
+		if (arrayList.length === 1){
+			// if only one uid array was passed in, return it, we're done
+			return arrayList[0];
+		}
+		// find the shortest array:
+		var testArray = arrayList.sort(function(a,b){
+			return a.length - b.length;
+		})[0];
+		testArray.forEach(function(uid){
+			var matchFlag = true;
+			arrayList.forEach(function(testAgainst){
+				if (testAgainst.indexOf(uid)===-1){
+					matchFlag = false;
+				}
+			})
+			if (matchFlag === true){
+				matches.push(uid);
+			}
+		})
+		return matches;
+	}
+
+	// not an actual uid but unique enough for our needs.
+	var makeUid = function() {
+		return parseInt((new Date()).getTime() + String(Math.floor(Math.random() * 100)));
+	}
 
   exports.Jscrud = Jscrud;
 }(typeof exports === 'undefined' ? this : exports));
