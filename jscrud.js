@@ -13,7 +13,7 @@
 		  // store item as a JSON string inside the localStorage engine
 
 		  var key = nameSpacer(item.__uid, nameSpace);
-		  var value = JSON.stringify(item);
+		  var value = JSON.stringify(item); // be careful here
 
 		  storageEngine.setItem(key, value);
 	  }
@@ -166,7 +166,7 @@
 		// remove the program-added uid for the user's copy of the record
 
 		// safely clone our object so deleting attributes doesn't remove them for real
-		var publicFormRecord = JSON.parse(JSON.stringify(record));
+		var publicFormRecord = JSON.parse(JSON.stringify(record)); // be careful here
 
 		delete publicFormRecord.__uid;
 		return publicFormRecord;
