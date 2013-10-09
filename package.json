@@ -1,0 +1,7 @@
+{
+  "name": "jscrud",
+  "version": "0.1.0",
+  "devDependencies": {
+    "node-localstorage": "0.3.4"
+  }
+}
