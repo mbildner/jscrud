@@ -1,8 +1,10 @@
 var path = require('path')
 
+var LocalStorage = require('node-localstorage').LocalStorage;
 var jscrud = require(path.join(path.dirname(module.filename), 'jscrud.js'));
 
-var db = new jscrud.Jscrud();
+var localStorage = new LocalStorage('./scratch');
+var db = new jscrud.Jscrud(localStorage);
 
 
 records = [
