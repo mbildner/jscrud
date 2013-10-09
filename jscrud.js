@@ -3,7 +3,6 @@
 	  // Create, Read, Update, Delete methods will have to be supported
 	  // as items are created they will first have to be indexed
 
-	  var holder = {};
 	  var indices = {};
 
 	  var nameSpace = protectedNameSpace || "jscrud" + Math.floor(Math.random()*1000000);
