@@ -97,7 +97,7 @@
 		  indexObject(newItem);
 	  }
 
-	  var createRecord = function(item){
+	  this.createRecord = function(item){
 		  var uid = makeUid();
 		  item['__uid'] = uid;
 		  // index the object
@@ -118,7 +118,7 @@
 		  });
 	  }
 
-	  var readRecord = function(item){
+	  this.readRecord = function(item){
 	    // find and return a record
 		  var uids = matchObject(item);
 
@@ -127,7 +127,7 @@
 		  });
 	  }
 
-	  var deleteRecord = function(item){
+	  this.deleteRecord = function(item){
 		  var uids = matchObject(item);
 		  var uids2 = uids.slice(0, uids.length)
 
@@ -140,7 +140,7 @@
 	  }
 
 
-	  var updateRecord = function(item, updates){
+	  this.updateRecord = function(item, updates){
 		  // update record
 
 		  // find and retrieve an array of items that match the pattern of 'item'
@@ -165,12 +165,6 @@
 
 		  return undefined
 	  }
-
-
-	  this.readRecord = readRecord;
-	  this.createRecord = createRecord;
-	  this.deleteRecord = deleteRecord;
-	  this.updateRecord = updateRecord;
   }
 
 	var nameSpacer = function(name, nameSpace){
