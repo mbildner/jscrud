@@ -8,13 +8,7 @@ function Jscrud(selectedStorageEngine, protectedNameSpace){
 
 	var nameSpace = protectedNameSpace || "jscrud" + Math.floor(Math.random()*1000000);
 
-	var engines = {
-		'localStorage': window.localStorage,
-		'sessionStorage': window.sessionStorage
-	};
-
-
-	var storageEngine =  ( engines[selectedStorageEngine] || window.sessionStorage );
+	var storageEngine = ( selectedStorageEngine || window.sessionStorage );
 
 
 	var nameSpacer = function(name, nameSpace){
