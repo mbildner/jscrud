@@ -7,7 +7,7 @@ var localStorage = new LocalStorage('./scratch');
 var db = new jscrud.Jscrud(localStorage);
 
 
-records = [
+var records = [
 	{first:'moshe', last:'bildner'},
 	{first:'nechama', last:'bildner'},
 	{first:'gery', last:'brownholtz'},
