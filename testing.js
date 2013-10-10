@@ -4,6 +4,7 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 var jscrud = require('./jscrud.js');
 
 var localStorage = new LocalStorage('./scratch');
+localStorage.clear();
 var db = new jscrud.Jscrud(localStorage);
 
 
