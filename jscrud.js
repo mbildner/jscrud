@@ -181,23 +181,14 @@
 			// if only one uid array was passed in, return it, we're done
 			return arrayList[0];
 		} else {
-      var matches = [];
 		  // find the shortest array:
 		  var testArray = arrayList.sort(function(a,b){
 			  return a.length - b.length;
 		  })[0];
-		  testArray.forEach(function(uid){
-			  var matchFlag = true;
-			  arrayList.forEach(function(testAgainst){
-				  if (testAgainst.indexOf(uid)===-1){
-					  matchFlag = false;
-				  }
-			  })
-			  if (matchFlag === true){
-				  matches.push(uid);
-			  }
+
+		  return testArray.filter(function(uid){
+			  return arrayList.every(function(x) { return x.indexOf(uid) !== -1; });
 		  })
-		  return matches;
     }
 	}
 
