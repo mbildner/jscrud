@@ -57,7 +57,7 @@
 				  var indx = indices[key];
 				  var hit = indx[value];
           if (hit !== undefined) {
-				    indxHits.push(hit);
+				    indxHits.push(hit.slice(0)); // copy uuid array so any mods do not harm index
           }
 			  } else {
 				  // there is no index defined for some key in the matching object, therefore there is no match, return out of the loop
@@ -72,10 +72,7 @@
 
 	  var stripIndices = function(uuids){
 		  // clear an item's old indices
-
-		  // return a new uids object we can edit without problematic side effects (they were being deleted somewhere else and throwing errors)
-		  var uids = uuids.slice(0, uuids.length)
-		  uids.forEach(function(uid){
+		  uuids.forEach(function(uid){
 			  var item = retrieveObject(uid);
 
 			  if (item == null) {
@@ -126,12 +123,11 @@
 
 	  this.deleteRecord = function(item){
 		  var uids = matchObject(item);
-		  var uids2 = uids.slice(0, uids.length)
 
 		  stripIndices(uids);
 
 		  // clear an item's old indices
-		  uids2.forEach(function(uid){
+		  uids.forEach(function(uid){
 			  storageEngine.removeItem(nameSpacer(uid, nameSpace));
 		  });
 	  }
