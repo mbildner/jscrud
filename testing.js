@@ -30,6 +30,9 @@ assert.deepEqual(db.readRecord({ first: 'moshe' })[0].last, 'bildner');
 // check does not fail if filter criteria match key ('first') but not value
 assert.equal(db.readRecord({ first: 'aoetahudontehu' }).length, 0);
 
+// check only returns records that match all filter criteria
+assert.equal(db.readRecord({ first: 'moshe', last: 'bildner' }).length, 1);
+
 // update
 
 db.updateRecord({ first: 'moshe' }, { last: 'sky' });
