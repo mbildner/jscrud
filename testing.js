@@ -26,6 +26,9 @@ records.forEach(function(record){
 assert.equal(db.readRecord({ first: 'moshe' }).length, 3);
 assert.deepEqual(db.readRecord({ first: 'moshe' })[0].last, 'bildner');
 
+// check does not fail if filter criteria match key ('first') but not value
+assert.equal(db.readRecord({ first: 'aoetahudontehu' }).length, 0);
+
 // update
 
 db.updateRecord({ first: 'moshe' }, { last: 'sky' });
