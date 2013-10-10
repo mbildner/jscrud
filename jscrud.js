@@ -52,10 +52,13 @@
 		  for (key in item){
 			  var value = item[key];
 			  if (key in indices){
-				  // if there is an index defined for the matching object, push the uid's in the index array and into the indxHits array
+				  // if there is an index defined for the matching object, that has matching value,
+          // push the uid's in the index array and into the indxHits array
 				  var indx = indices[key];
 				  var hit = indx[value];
-				  indxHits.push(hit);
+          if (hit !== undefined) {
+				    indxHits.push(hit);
+          }
 			  } else {
 				  // there is no index defined for some key in the matching object, therefore there is no match, return out of the loop
 				  return [];
@@ -176,27 +179,30 @@
 		// the shortest uid array passed in should be the source for all tested uids
 		// by definition, any item in the intersection of all arrays must be in the shortest array
 		// create an array to hold matched uids
-		var matches = [];
-		if (arrayList.length === 1){
+    if (arrayList.length === 0) {
+      return [];
+    } else if (arrayList.length === 1) {
 			// if only one uid array was passed in, return it, we're done
 			return arrayList[0];
-		}
-		// find the shortest array:
-		var testArray = arrayList.sort(function(a,b){
-			return a.length - b.length;
-		})[0];
-		testArray.forEach(function(uid){
-			var matchFlag = true;
-			arrayList.forEach(function(testAgainst){
-				if (testAgainst.indexOf(uid)===-1){
-					matchFlag = false;
-				}
-			})
-			if (matchFlag === true){
-				matches.push(uid);
-			}
-		})
-		return matches;
+		} else {
+      var matches = [];
+		  // find the shortest array:
+		  var testArray = arrayList.sort(function(a,b){
+			  return a.length - b.length;
+		  })[0];
+		  testArray.forEach(function(uid){
+			  var matchFlag = true;
+			  arrayList.forEach(function(testAgainst){
+				  if (testAgainst.indexOf(uid)===-1){
+					  matchFlag = false;
+				  }
+			  })
+			  if (matchFlag === true){
+				  matches.push(uid);
+			  }
+		  })
+		  return matches;
+    }
 	}
 
 	// not an actual uid but unique enough for our needs.
