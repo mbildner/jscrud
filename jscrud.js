@@ -77,15 +77,16 @@
 
 			  if (item == null) {
 				  return;
-			  }
-			  for (key in item){
-				  var currentIndex = indices[key];
-				  var entry = currentIndex[item[key]];
+			  } else {
+			    for (key in item){
+				    var currentIndex = indices[key];
+				    var entry = currentIndex[item[key]];
 
-				  // find the uid of the item to be cleared from index
-				  var removeIndex = entry.indexOf(uid);
-				  entry.splice(removeIndex, 1);
-			  }
+				    // find the uid of the item to be cleared from index
+				    var removeIndex = entry.indexOf(uid);
+				    entry.splice(removeIndex, 1);
+			    }
+        }
 		  });
 	  }
 
